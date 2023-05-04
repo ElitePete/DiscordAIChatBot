@@ -1,6 +1,8 @@
 require('dotenv').config(); 
 const Discord = require('discord.js'); 
 const { Configuration, OpenAIApi } = require("openai");
+const express = require('express');
+const app = express();
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -16,6 +18,12 @@ const client = new Discord.Client({
         Discord.IntentsBitField.Flags.DirectMessages,
         Discord.IntentsBitField.Flags.DirectMessageTyping
     ]
+});
+
+const PORT = process.env.PORT; 
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
 
 
