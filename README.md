@@ -32,6 +32,12 @@ Before running the bot, you need to set up the configuration. Follow these steps
     ```
 >NOTE: Discord is constantly changing, I will update as needed
 
+### Open AI 
+1. Add your OpenAI API key to the .env file
+    ```
+    OPENAI_API_KEY = Api-key-here
+    ```
+
 ### Usage
 To start the bot, run the following command:
     ```
