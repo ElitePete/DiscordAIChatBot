@@ -1,8 +1,10 @@
-require('dotenv').config(); 
 const Discord = require('discord.js'); 
 const { Configuration, OpenAIApi } = require("openai");
 const express = require('express');
+
 const app = express();
+
+require('dotenv').config();
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -20,14 +22,13 @@ const client = new Discord.Client({
     ]
 });
 
+//required for hosting on HEROKU, without specifying the port, it will crash shortly after deployment
+
 const PORT = process.env.PORT; 
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-
-
-
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -36,6 +37,8 @@ client.on('ready', () => {
 
 
 
+//listens for the command !question and sends question to OpenAI API, then responds with the first generated answer. 
+//It stores the question in a const called stringPrompt, and includes it in the prompt.
 
 client.on('messageCreate', async msg => {
     const stringPrompt = msg.content;
