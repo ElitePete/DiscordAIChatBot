@@ -57,6 +57,12 @@ This is required if you plan on hosting on heroku:
 -It can be customized with additional functionality to suit your specific needs.
 -The bot is designed to be extendable and can be integrated with various APIs and services.
 
+
+### Updates
+Code safety example:
+ <img src="./imgs/readmeexample1.png">
+
 ### License
 This project is licensed under the MIT License.
+
 
