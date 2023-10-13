@@ -39,38 +39,39 @@ client.on('ready', () => {
 //It stores the question in a const called stringPrompt, and includes it in the prompt.
 
 client.on('messageCreate', async msg => {
-  const stringPrompt = msg.content;
-  const triggerCommand = '!question';
-  const codeSafety = ' (Surround any code blocks with three ` characters so it will display correctly. Ex. ```Code```';
+    const stringPrompt = msg.content;
+    const triggerCommand = '!question';
+    const codeSafety = ' (Surround any code blocks with three ` characters so it will display correctly. Ex. ```Code```';
+    
+    if (stringPrompt.includes(triggerCommand)) {
   
-  if (stringPrompt.includes(triggerCommand)) {
-
-      try {
-          const response = await openai.completions.create({
-              model: "gpt-4",
-              prompt: stringPrompt + codeSafety,
-              temperature: 0.7,
-              max_tokens: 800,
-              top_p: 1,
-              frequency_penalty: 0,
-              presence_penalty: 0,
-          });
-
-          const generatedResponse = response.choices[0].text.trim();
-          msg.reply(`Hello ${msg.author.username}, let me answer that for you: \n${generatedResponse}`);
-
-      } catch (error) {
-          if (error instanceof OpenAI.APIError) { //per openai 4.0.0+
-              console.error(error.status);  // e.g., 401
-              console.error(error.message); // e.g., The authentication token you passed was invalid...
-              console.error(error.code);    // e.g., 'invalid_api_key'
-              console.error(error.type);    // e.g., 'invalid_request_error'
-          } else {
-              console.log(error);
-          }
-      }
-  }
-});
+        try {
+            // Using chat.completions.create for chat models
+            const response = await openai.chat.completions.create({
+                model: "gpt-4",
+                messages: [{"role": "user", "content": stringPrompt + codeSafety}],
+                temperature: 0.7,
+                max_tokens: 800,
+                top_p: 1,
+                frequency_penalty: 0,
+                presence_penalty: 0,
+            });
+  
+            const generatedResponse = response.choices[0].message.content.trim();
+            msg.reply(`Hello ${msg.author.username}, let me answer that for you: \n${generatedResponse}`);
+  
+        } catch (error) {
+            if (error instanceof OpenAI.APIError) { // per openai 4.0.0+
+                console.error(error.status);  // e.g., 401
+                console.error(error.message); // e.g., The authentication token you passed was invalid...
+                console.error(error.code);    // e.g., 'invalid_api_key'
+                console.error(error.type);    // e.g., 'invalid_request_error'
+            } else {
+                console.log(error);
+            }
+        }
+    }
+  });
 
 client.login(process.env.CLIENT_TOKEN); 
 
